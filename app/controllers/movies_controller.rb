@@ -40,7 +40,7 @@ class MoviesController < ApplicationController
       @sort = field
       session[:sort] = params[:sort]
     else
-      redirect_to controller: "movies", action: "index", sort: session[:sort]
+      #redirect_to controller: "movies", action: "index", sort: session[:sort]
     end
     
    
