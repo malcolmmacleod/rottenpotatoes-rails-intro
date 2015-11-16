@@ -20,9 +20,11 @@ class MoviesController < ApplicationController
     
     @all_ratings = Movie.all_ratings
     
+    @sort = ""
     if params[:sort] != nil 
       field = params[:sort]
       @movies = Movie.order(field)
+      @sort = field
     end
     
     @saved_ratings = {}
