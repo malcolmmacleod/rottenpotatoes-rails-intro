@@ -11,6 +11,17 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = Movie.all_ratings
+    
+    if params[:ratings] == nil
+      default_ratings = {}
+      @all_ratings.each do |r|
+        default_ratings[r] = true
+      end
+      
+      redirect_to controller: "movies", action: "index", method: "get", ratings: @all_ratings.to_s
+    end
+    
     if params[:ratings] != nil
       @selected_ratings = params[:ratings]
       @movies = Movie.where(:rating => @selected_ratings.keys)
@@ -18,7 +29,7 @@ class MoviesController < ApplicationController
       @movies = Movie.all
     end 
     
-    @all_ratings = Movie.all_ratings
+    
     
     @sort = ""
     if params[:sort] != nil 
