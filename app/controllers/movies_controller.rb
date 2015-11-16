@@ -28,7 +28,7 @@ class MoviesController < ApplicationController
     @saved_ratings = {}
     
     @all_ratings.each do |rating|
-      if @selected_ratings[rating] != nil
+      if @selected_ratings != nil && @selected_ratings[rating] != nil
         @saved_ratings[rating] = true
       else
         @saved_ratings[rating] = false
