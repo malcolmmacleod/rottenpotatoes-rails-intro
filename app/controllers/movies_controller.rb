@@ -25,7 +25,7 @@ class MoviesController < ApplicationController
           @saved_ratings[rating] = false
         end
       end
-    
+      session[:ratings] = params[:ratings]
     else
        @all_ratings.each do |rating|
          @saved_ratings[rating] = true
@@ -33,16 +33,14 @@ class MoviesController < ApplicationController
        @movies = Movie.all
     end 
     
-   
-    
-    
-    
-    
     @sort = ""
     if params[:sort] != nil 
       field = params[:sort]
       @movies = Movie.order(field)
       @sort = field
+      session[:sort] = params[:sort]
+    else
+      redirect_to controller: "movies", action: "index", sort: session[:sort]
     end
     
    
