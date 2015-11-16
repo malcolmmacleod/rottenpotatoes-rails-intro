@@ -11,13 +11,28 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.all
-     
-    if params.length > 0 
-      field = params[:sort]
-      @movies = Movie.order(field)
+    if params[:ratings] != nil
+      @selected_ratings = params[:ratings]
+      @movies = Movie.where(:rating => @selected_ratings.keys)
     else
       @movies = Movie.all
+    end 
+    
+    @all_ratings = Movie.all_ratings
+    
+    if params[:sort] != nil 
+      field = params[:sort]
+      @movies = Movie.order(field)
+    end
+    
+    @saved_ratings = {}
+    
+    @all_ratings.each do |rating|
+      if @selected_ratings[rating] != nil
+        @saved_ratings[rating] = true
+      else
+        @saved_ratings[rating] = false
+      end
     end
     
   end
@@ -42,12 +57,10 @@ class MoviesController < ApplicationController
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
-
-  def destroy
-    @movie = Movie.find(params[:id])
-    @movie.destroy
-    flash[:notice] = "Movie '#{@movie.title}' deleted."
-    redirect_to movies_path
+  
+  def get
+    
   end
+
 
 end
