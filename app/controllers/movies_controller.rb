@@ -12,22 +12,29 @@ class MoviesController < ApplicationController
 
   def index
     @all_ratings = Movie.all_ratings
-    
-    if params[:ratings] == nil
-      default_ratings = {}
-      @all_ratings.each do |r|
-        default_ratings[r] = true
-      end
-      
-      redirect_to controller: "movies", action: "index", method: "get", ratings: @all_ratings.to_s
-    end
+    @saved_ratings = {}
     
     if params[:ratings] != nil
       @selected_ratings = params[:ratings]
       @movies = Movie.where(:rating => @selected_ratings.keys)
+      
+      @all_ratings.each do |rating|
+        if @selected_ratings != nil && @selected_ratings[rating] != nil
+          @saved_ratings[rating] = true
+        else
+          @saved_ratings[rating] = false
+        end
+      end
+    
     else
-      @movies = Movie.all
+       @all_ratings.each do |rating|
+         @saved_ratings[rating] = true
+       end
+       @movies = Movie.all
     end 
+    
+   
+    
     
     
     
@@ -38,15 +45,7 @@ class MoviesController < ApplicationController
       @sort = field
     end
     
-    @saved_ratings = {}
-    
-    @all_ratings.each do |rating|
-      if @selected_ratings != nil && @selected_ratings[rating] != nil
-        @saved_ratings[rating] = true
-      else
-        @saved_ratings[rating] = false
-      end
-    end
+   
     
   end
 
